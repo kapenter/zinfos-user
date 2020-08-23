@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.dingdang.user.mapper.UserMapper">
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 svuserid, svuserteleno, svuserleftmoney, svusertotalmoney, svuserlifeday, svuserexpireday, svusergenday, svuserstate, svuserbandfromip, svuseruptnumber, svuserbloc, svuserpasswd, svuserpaybloc, svusername, svuserisbloc, svuserddisplaycaller, svuserisneedmixmontor, svuserisneedsip, svusersecuptnumber, svuserspreaduid, svuserfollowme, svuserccsimul, svuserccprojdelay, svuserccprojstarttime, svuserccprojendtime, svuserextenno, svusernote, svusertype, svusersimuprojnum, svuserneedmailbox, svusermailbox, svusercarrier, roletype, svusercalltype, svusertelnature, svuserpopup, subextno, svuserparam, svuserotherid, svuserautoidle, svusersimuainum, svuserarea, svuseraddress, svuserface, svusersex
+	</sql>
+
+</mapper>

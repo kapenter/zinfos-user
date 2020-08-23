@@ -1,9 +1,9 @@
-package com.zinfos.user.vo;
+package com.api.dingdang.user.vo;
 
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserDO {
 
     private String userName;
 

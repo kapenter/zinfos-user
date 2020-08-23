@@ -3,9 +3,18 @@ server:
 spring:
   application:
     name: zinfos-user
+  main:
+    allow-bean-definition-overriding: true
 eureka:
   instance:
     hostname: localhost
   client:
     service-url:
       defaultZone: http://${eureka.instance.hostname}:80/eureka/
+#spring:
+#  datasource:
+#    url: jdbc:mysql://127.0.0.1:3306/springboot_db?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+#    driverClassName: com.mysql.jdbc.Driver
+#    username: root
+#    password: root
+#    type: com.alibaba.druid.pool.DruidDataSource

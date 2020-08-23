@@ -1,0 +1,59 @@
+<configuration>
+	<contextName>dhapp-5301-debtoauth2</contextName>
+	<Property name="project.name" value="dhapp-5301-debtoauth2" />
+	<Property name="log.base" value="/log/app/${project.name}" />
+	<Property name="log.name" value="${project.name}" />
+
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%d][%-5level][%contextName][%X{transId}][%logger{0}:%L] %m%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="STDOUT" />
+		<queueSize>100000</queueSize>
+	</appender>
+
+	<appender name="rollingFile"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${log.base}/${log.name}.log</File>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<fileNamePattern>${log.base}/${log.name}_%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>[%d][%-5level][%contextName][%X{transId}][%logger{0}:%L] %m%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!--<appender name="kafkaAppender"-->
+			  <!--class="com.github.danielwegener.logback.kafka.KafkaAppender">-->
+		<!--<encoder-->
+				<!--class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">-->
+			<!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+				<!--<pattern>[%d][1][springcloud-8087-begateway][%-5level][%contextName][%X{transId}][%logger{0}:%L] %m%n</pattern>-->
+			<!--</layout>-->
+		<!--</encoder>-->
+		<!--<topic>gateway-logs</topic>-->
+		<!--<keyingStrategy-->
+				<!--class="com.github.danielwegener.logback.kafka.keying.RoundRobinKeyingStrategy" />-->
+		<!--<deliveryStrategy-->
+				<!--class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />-->
+		<!--<producerConfig>bootstrap.servers=172.20.21.35:9092,172.20.21.36:9092,172.20.21.37:9092</producerConfig>-->
+		<!--&lt;!&ndash;<producerConfig>bootstrap.servers=127.0.0.1:9092</producerConfig>&ndash;&gt;-->
+	<!--</appender>-->
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="rollingFile" />
+		<!--<appender-ref ref="kafkaAppender" />-->
+	</root>
+
+</configuration>
