@@ -1,5 +1,6 @@
 package com.api.dingdang.user.module;
 
+import com.baomidou.mybatisplus.annotations.IdType;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -23,7 +24,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**  */
-	@TableId
+	@TableId(value = "id",type = IdType.AUTO)
 	private Integer svuserid;
 
 	/** 用户注册的手机号 */

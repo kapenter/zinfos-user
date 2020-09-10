@@ -6,7 +6,7 @@
 
 -----------------------------------------用户管理----------------------------------------
 1.用户注册
-URL	:     /userReg
+URL	:     user/reg
 Request Method: POST
 "headers": 
 "Content-Type: application/json; charset=utf-8 ;version=1.0.0"
@@ -28,27 +28,48 @@ Request Method: POST
 
 
 2.登录接口
-URL	:     /doLogin
-Request Method: POST
-"headers": 
-"Content-Type: application/json; charset=utf-8 ;version=1.0.0"
-
-    请求参数	
-    {
-    “mobile”;”17688917168”,
-    ”password”:"sfsdfsdfsfsdsdffsdfsdfs”
-    }
-    返回结果	登录成功
-    {
-    “code”:  200,  //成功
-    “message”:”登录成功”,
-    “data”:
-    {
-          “accessTokne”:”32325d-s2dae-2-3-32-23-32323”
-    } 
+    2.1:短信/密码登录
+    URL	:     user/doLogin
+    Request Method: POST
+    "headers": 
+    "Content-Type: application/json; charset=utf-8 ;version=1.0.0"
+    
+        请求参数	
+        {
+        “mobile”;”17688917168”,
+        ”password”:"sfsdfsdfsfsdsdffsdfsdfs”
+        }
+        返回结果	登录成功
+        {
+        “code”:  200,  //成功
+        “message”:”登录成功”,
+        “data”:
+        {
+              “accessTokne”:”32325d-s2dae-2-3-32-23-32323”
+        } 
+        
+    2.2:短信/验证码登录
+    URL	:     user/verifyLogin
+    Request Method: POST
+    "headers": 
+    "Content-Type: application/json; charset=utf-8 ;version=1.0.0"
+        请求参数	
+        {
+        “mobile”;”17688917168”,
+        ”verifyCode”:"163526”
+        }
+        返回结果	登录成功
+        {
+        “code”:  200,  //成功
+        “message”:”登录成功”,
+        “data”:
+        {
+              “accessTokne”:”32325d-s2dae-2-3-32-23-32323”
+        } 
+    
 
 3.用户信息修改
-URL	:     /updateUserInfo
+URL	:     user/updateInfo
 Request Method: POST
 "headers": 
 "Content-Type: application/json; charset=utf-8 ;version=1.0.0"
@@ -56,9 +77,9 @@ Request Method: POST
     请求参数	
     {
     “sex”;”0”,
-    "svuserface”:"xxx.img”,//非必填
-    "svuserarea" :"用户所在地区", //非必填
-    "svuseraddress": "用户详细地址"//非必填
+    "userFace”:"xxx.img”,//非必填
+    "userArea" :"用户所在地区", //非必填
+    "userAddress": "用户详细地址"//非必填
     }
     返回结果	
     {
@@ -67,22 +88,6 @@ Request Method: POST
     “data”:{}
     }
 -----------------------------------------快件管理----------------------------------------
--- 快件表
-DROP TABLE IF EXISTS `sv_dd_storehouse_static`;
-CREATE TABLE `sv_dd_goods_storehouse` (
-  `svddsid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',  -- 通话记录里的requestid保存快件的id
-  `svddsexpressno`  varchar(64) DEFAULT '' COMMENT '',  --  货物运单号
-  `svddstelephone`  varchar(64) DEFAULT '' COMMENT '',  --  货物接收人电话号码
-  `svddspickupno` varchar(64) DEFAULT '' COMMENT '', -- 货物货架号
-  `svddstatus`  int(11) DEFAULT '0' COMMENT '',  --  0入库，1，出库
-  `svddstime` datetime DEFAULT NULL,   -- 添加的时间
-   svddpicktime datetime    DEFAULT NULL  --'取件时间',  
-   svddremark varchar(32)   --备注(未取件原因  拒收原因  取件 备注 之类)
-  PRIMARY KEY (`svddgsid`),
-  UNIQUE KEY  (`svddexpressno`)
-) ENGINE=InnoDB DEFAULT CHARSET=gbk;
-
-
 4:快件--入库
        URL	:     express/add
        Request Method: POST
@@ -133,7 +138,7 @@ CREATE TABLE `sv_dd_goods_storehouse` (
           返回结果	
           {
               “code”:  200,  //成功
-              “message”:  "快件查询”,
+              “message”:  "快件查询成功”,
               “data”:[
                   {"svddsexpressno":"1111","svddspickupno":"A-1-1".....},
                   {"svddsexpressno":"2222","svddspickupno":"A-1-2".....}
@@ -142,19 +147,6 @@ CREATE TABLE `sv_dd_goods_storehouse` (
           
           
 -----------------------------------------模板管理----------------------------------------
-----模板表
-DROP TABLE IF EXISTS `sv_notice_temp`;
-CREATE TABLE `sv_notice_temp` (
-  `svtid` int(11) NOT NULL AUTO_INCREMENT COMMENT '语音模板ID',
-  `svtname` varchar(256) DEFAULT NULL COMMENT '模版名',
-  `svtcontext` varchar(4096) DEFAULT NULL COMMENT '模版内容',
-  `svntsort` int(11) DEFAULT NULL COMMENT '系统TTS生成语音1，自定义为2',
-  `svnnature` varchar(256) DEFAULT NULL COMMENT '所属企业账户',
-  `svtsignature` varchar(256) DEFAULT NULL COMMENT '模板签名',
-  `svtdate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`svtid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=gbk COMMENT='语音模板表';
-
 6:模板--新增
        URL	:     template/add
        Request Method: POST
@@ -163,9 +155,9 @@ CREATE TABLE `sv_notice_temp` (
        
        请求参数	
        {
-       “svtname”;”模板名称”,
-        "svtcontext”:"模板内容”,
-        "svtsignature" :"模板签名", 
+       “name”;”模板名称”,
+        "context”:"模板内容”,
+        "signature" :"模板签名", 
        }
        返回结果	
        {
@@ -182,7 +174,7 @@ CREATE TABLE `sv_notice_temp` (
        
        请求参数	
        {
-       “svtid”;”语音模板ID”,
+       “id”;”语音模板ID”,
        }
        返回结果	
        {
@@ -200,10 +192,10 @@ CREATE TABLE `sv_notice_temp` (
        
        请求参数	
        {
-        “svtid”;”语音模板ID”,
-        “svtname”;”模板名称”,
-         "svtcontext”:"模板内容”,
-         "svtsignature" :"模板签名", 
+        “id”;”语音模板ID”,
+        “name”;”模板名称”,
+         "context”:"模板内容”,
+         "signature" :"模板签名", 
        }
        返回结果	
        {
@@ -220,12 +212,12 @@ CREATE TABLE `sv_notice_temp` (
        
        请求参数	
        {
-        “svtname”;”模板名称”,//非必填
+        “name”;”模板名称”,//非必填
        }
        返回结果	
        {
        “code”:  200,  //成功
-       “message”:”修改模板成功”,
+       “message”:”查询模板成功”,
       “data”:[
                         {"svtid":"1","svtname":"顺丰快递","svtcontext":"货号:{},快递号{},请到xxx拿快递".....},
                          {"svtid":"2","svtname":"圆通快递","svtcontext":"货号:{},快递号{},请到xxx拿快递".....}
@@ -234,24 +226,6 @@ CREATE TABLE `sv_notice_temp` (
        
        
 -----------------------------------------发送记录----------------------------------------
-
--- 叮当通知之快件统计
-DROP TABLE IF EXISTS `sv_dd_storehouse_static`;
-CREATE TABLE `sv_dd_storehouse_static` (
-  `svddsid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',  -- id
-  `svddsexpressno`  varchar(64) DEFAULT '' COMMENT '',  --  货物运单号
-  `svddstelephone`  varchar(64) DEFAULT '' COMMENT '',  --  货物接收人电话号码
-  `svddspickupno` varchar(64) DEFAULT '' COMMENT '', -- 货物货架号
-  `svddstatus`  int(11) DEFAULT '0' COMMENT '',  --  0:已发送，1，接受 2:失败 3:回复
-    svddaccount  varchar(32)  --发送账号
-  `svddstime` datetime DEFAULT NULL,   -- 添加的时间
-   svddpicktime datetime    DEFAULT NULL  --'取件时间',  
-   svddtempid int           --模板id  
-   type        int(2)     ,--发送方式  1:短信 2:群呼
-   PRIMARY KEY (`svddgsid`),
-   UNIQUE KEY  (`svddexpressno`)
-) ENGINE=InnoDB DEFAULT CHARSET=gbk;
-
 8:发送记录--查询
        URL	:     sendRecords/list
        Request Method: POST
@@ -279,18 +253,6 @@ CREATE TABLE `sv_dd_storehouse_static` (
        
        
 -----------------------------------------分组管理----------------------------------------   
-----分组表
-DROP TABLE IF EXISTS `sv_dd_group`;
-CREATE TABLE `sv_dd_group` (
-  `svgid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `svggourpname` varchar(256) DEFAULT NULL COMMENT '分组名称',
-  `svgnnature` varchar(256) DEFAULT NULL COMMENT '所属账户',
-  `svgcreatetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP  COMMENT '创建时间',
-  `svgmodifytime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT  '修改时间',
-  PRIMARY KEY (`svgid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=gbk COMMENT='分组表';
-
-    
 9:分组--新增
        URL	:     group/add
        Request Method: POST
@@ -299,7 +261,7 @@ CREATE TABLE `sv_dd_group` (
        
        请求参数	
        {
-       “svggourpname ”;”分组名称”,
+       “gourpName ”;”分组名称”,
        }
        返回结果	
        {
@@ -316,12 +278,12 @@ CREATE TABLE `sv_dd_group` (
        
        请求参数	
        {
-       “svgid”;”分组ID”,
+       “id”;”分组ID”,
        }
        返回结果	
        {
        “code”:  200,  //成功
-       “message”:”删除分组成功”,
+       “message”:”分组删除成功”,
        “data”:{}
        }
        
@@ -334,8 +296,8 @@ CREATE TABLE `sv_dd_group` (
        
        请求参数	
        {
-        “svgid”;”语音模板ID”,
-         "svggourpname”;"分组名称”,
+        “id”;”语音模板ID”,
+         "gourpName”;"分组名称”,
        }
        返回结果	
        {
@@ -357,7 +319,7 @@ CREATE TABLE `sv_dd_group` (
        返回结果	
        {
        “code”:  200,  //成功
-       “message”:”修改模板成功”,
+       “message”:”分组查询成功”,
        “data”:[
                         {"svgid":"1","svggourpname":"宝安区客户"},
                         {"svtid":"2","svggourpname":"福田区客户"}
@@ -367,24 +329,6 @@ CREATE TABLE `sv_dd_group` (
  
        
 -----------------------------------------客户管理----------------------------------------
-CREATE TABLE IF NOT EXISTS `sv_customer_fields` (
-  `svcfid` int(11) NOT NULL AUTO_INCREMENT,
-  `svcfname` varchar(64) NOT NULL default '',		-- 页面显示字段名称
-  `svcftype` ENUM('int', 'decimal', 'varchar', 'date', 'datetime', 'time', 'text') NOT NULL DEFAULT 'varchar', -- 客户资料表字段类型
-  `svcflength` int(11) NOT NULL DEFAULT '0',		-- 客户资料表字段长度(不一定需要)
-  `svcfdefault` varchar(128) DEFAULT NULL,		-- 客户资料表字段默认值
-  `svcfshowtype` ENUM('text', 'textarea', 'select', 'radio', 'checkbox', 'img', 'file', 'password', 'hidden') NOT NULL DEFAULT 'text',-- 页面显示字段类型
-  `svcfinuse` tinyint(1) NOT NULL DEFAULT '1',		-- 自定义字段是否使用，默认1使用
-  `svcfshowpage` SET('create', 'modify', 'list', 'popup', 'detail','import','export') NOT NULL DEFAULT 'detail', -- 在哪些页面里显示
-  `svcfcreater` varchar(32) NOT NULL DEFAULT '',	-- 归属（按企业，企业及以下的所有客服都要使用这个字段）
-  `svcfsort` int(11) NOT NULL DEFAULT '0',		-- 页面显示排序（自定义字段管理页面也将此字段排序）
-  `svcfcreatetime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `svcfcolname` varchar(64) NOT NULL default '',       -- 客户资料表中字段名(英文)
-  `svcfmark` varchar(128) NOT NULL default '',	       -- 备注 
-  PRIMARY KEY (`svcfid`)
-) ENGINE=InnoDB DEFAULT CHARSET=gbk AUTO_INCREMENT=1;
-
-
 13:客户--新增
        URL	:     customer/add
        Request Method: POST
@@ -405,8 +349,8 @@ CREATE TABLE IF NOT EXISTS `sv_customer_fields` (
        “data”:{}
        }
 
-14:客户--新增
-       URL	:     customer/修改
+14:客户--修改
+       URL	:     customer/update
        Request Method: POST
        "headers": 
        "Content-Type: application/json; charset=utf-8 ;version=1.0.0"
@@ -427,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `sv_customer_fields` (
        }
         
  15:客户--查询
-        URL	:     customer/修改
+        URL	:     customer/list
         Request Method: POST
         "headers": 
         "Content-Type: application/json; charset=utf-8 ;version=1.0.0"

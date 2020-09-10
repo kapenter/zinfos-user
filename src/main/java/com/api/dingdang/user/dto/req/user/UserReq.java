@@ -1,4 +1,4 @@
-package com.api.dingdang.user.dto.req;
+package com.api.dingdang.user.dto.req.user;
 
 import lombok.Data;
 
