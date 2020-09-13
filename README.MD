@@ -546,3 +546,34 @@ CREATE TABLE IF NOT EXISTS `sv_customer_fields` (
         } 
 
  
+ ------------发送通知表-----------------
+ CREATE TABLE IF NOT EXISTS `svdd_sent_notice` (
+   `id` int(11) NOT NULL AUTO_INCREMENT,
+   `item_number_mode` int(2) ,		-- 货号模式
+   `type` int(2), -- 类型  0:草稿 1:定时
+   `open_call` int(2) NOT NULL DEFAULT '0',		-- 0:不开启 1:开启
+   `temp_id` int(16) not null,		-- 模板id
+   `sent_type` int(2)  not null ,--0:短信发送 1:语音发送 
+   `creater` varchar(32) NOT NULL DEFAULT '',	-- 创建人
+   `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 创建时时间
+   `modify` varchar(64) NOT NULL default '',       -- 修改人
+   `modify_time` varchar(128) NOT NULL default '',	       -- 修改时间 
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=gbk AUTO_INCREMENT=1;
+ 
+ 
+ ------------发送号码表-----------------
+  CREATE TABLE IF NOT EXISTS `svdd_sent_mobile` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `mobile` varchar2(32) ,		-- 手机号码
+    `order_no` varchar2(32) ,		-- 订单号码
+    `shelf_no` varchar2(32) ,		-- 货架号码
+    `send_status` int(2), -- 类型  0:未发送 1:已发送
+    `flg` int(2), -- 类型  0:新客户 1:老客户
+    `notice_id` int(16) not null,		-- 发送通知表id
+    `creater` varchar(32) NOT NULL DEFAULT '',	-- 创建人
+    `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 创建时时间
+    `modify` varchar(64) NOT NULL default '',       -- 修改人
+    `modify_time` varchar(128) NOT NULL default '',	       -- 修改时间 
+    PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=gbk AUTO_INCREMENT=1;

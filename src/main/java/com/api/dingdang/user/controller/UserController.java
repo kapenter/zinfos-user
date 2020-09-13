@@ -4,12 +4,18 @@ import com.api.dingdang.user.dto.req.user.UserLoginReqDTO;
 import com.api.dingdang.user.dto.req.user.UserLoginVerifyReqDTO;
 import com.api.dingdang.user.dto.req.user.UserRegReqDTO;
 import com.api.dingdang.user.dto.req.user.UserUpdateReqDTO;
-import com.api.dingdang.user.utils.JsonResponse;
 import com.api.dingdang.user.dto.resp.user.UserLoginResp;
 import com.api.dingdang.user.dto.resp.user.UserQueryResp;
+import com.api.dingdang.user.exception.enums.UserCodeEnum;
+import com.api.dingdang.user.mapstruct.UserMapStruct;
+import com.api.dingdang.user.module.User;
+import com.api.dingdang.user.service.IUserService;
+import com.api.dingdang.user.utils.JsonResponse;
+import com.api.dingdang.user.utils.ZuStringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +23,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/user")
 public class UserController {
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private UserMapStruct userMapStruct;
 
     @PostMapping("/reg")
     @ApiOperation(value = "用户注册")
@@ -28,8 +39,11 @@ public class UserController {
     @PostMapping("/doLogin")
     @ApiOperation(value = "用户密码登录")
     public JsonResponse doLogin(@RequestBody UserLoginReqDTO userLoginReqDTO){
-        String accessToken="32325d-s2dae-2-3-32-23-32323";
-        return JsonResponse.success(new UserLoginResp(accessToken));
+        User user= userService.selectOne(userMapStruct.loginReq2do(userLoginReqDTO));
+        if(user!=null){
+            return JsonResponse.success(new UserLoginResp(ZuStringUtil.getAccessToken()));
+        }
+        return JsonResponse.failure(UserCodeEnum.LOGIN_EXCEPTION);
     }
 
 
