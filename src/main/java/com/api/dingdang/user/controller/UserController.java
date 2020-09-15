@@ -29,6 +29,7 @@ public class UserController {
     @Autowired
     private UserMapStruct userMapStruct;
 
+
     @PostMapping("/reg")
     @ApiOperation(value = "用户注册")
     public JsonResponse userReg(@RequestBody UserRegReqDTO userRegReqDTO){
