@@ -11,6 +11,7 @@ import com.api.dingdang.user.mapstruct.UserMapStruct;
 import com.api.dingdang.user.module.User;
 import com.api.dingdang.user.service.IUserService;
 import com.api.dingdang.user.utils.JsonResponse;
+import com.api.dingdang.user.utils.RedisUtil;
 import com.api.dingdang.user.utils.ZuStringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,9 +31,14 @@ public class UserController {
     private UserMapStruct userMapStruct;
 
 
+    @Autowired
+    private RedisUtil redis;
+
     @PostMapping("/reg")
     @ApiOperation(value = "用户注册")
     public JsonResponse userReg(@RequestBody UserRegReqDTO userRegReqDTO){
+        redis.set("userName","zhouwei");
+        System.out.println(redis.get("userName"));
         return JsonResponse.success();
     }
 
