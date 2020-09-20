@@ -32,16 +32,16 @@ public class SpringConfiguration  {
     public Docket createRestApi() {
 
         ParameterBuilder token = new ParameterBuilder();
-        ParameterBuilder sign = new ParameterBuilder();
+        ParameterBuilder mobile = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
         token.name("token").description("token")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .required(false).build(); //header中的ticket参数非必填，传空也可以
-        sign.name("sign").description("sign")
+        mobile.name("mobile").description("mobile")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .required(false).build(); //header中的ticket参数非必填，传空也可以
         pars.add(token.build());
-        pars.add(sign.build());
+        pars.add(mobile.build());
 
 
 

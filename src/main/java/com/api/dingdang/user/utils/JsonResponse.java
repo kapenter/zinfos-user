@@ -1,6 +1,7 @@
 package com.api.dingdang.user.utils;
 
 import com.api.dingdang.user.constants.ResultEnums;
+import com.api.dingdang.user.exception.enums.BizCodeEnum;
 import com.api.dingdang.user.exception.enums.UserCodeEnum;
 import lombok.Data;
 
@@ -44,6 +45,13 @@ public class JsonResponse {
         JsonResponse jsonResponse=new JsonResponse();
         jsonResponse.setCode(userCodeEnum.getCode());
         jsonResponse.setMessage(userCodeEnum.getMessage());
+        return jsonResponse;
+    }
+
+    public static JsonResponse failure(BizCodeEnum bizCodeEnum){
+        JsonResponse jsonResponse=new JsonResponse();
+        jsonResponse.setCode(bizCodeEnum.getCode());
+        jsonResponse.setMessage(bizCodeEnum.getMessage());
         return jsonResponse;
     }
 

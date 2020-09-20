@@ -16,6 +16,7 @@ public enum BizCodeEnum {
     PARAM_SIGNATURENONCE_EXCEPTION("5205003","参数(signatureNonce)-签名-错误"),
     PARAM_FORMAT_EXCEPTION("5205004","参数(format)-语言类型-错误"),
     PARAM_SIGNATURE_METHOD_EXCEPTION("5205005","参数(signatureMethod)-签名方式-错误"),
+    TOKEN_INVALID("5205006","签名无效"),
     SIGN_FAIL("10003","签名错误");
     private String code;
     private String message;
