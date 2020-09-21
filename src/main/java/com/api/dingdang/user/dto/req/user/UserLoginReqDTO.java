@@ -8,11 +8,11 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UserLoginReqDTO {
 
-    @NotNull
+    @NotNull(message = "手机号码不能为空")
     @ApiModelProperty(example = "手机号码",required = true)
     private String  mobile;
 
-    @NotNull
+    @NotNull(message = "密码不能为空")
     @ApiModelProperty(example = "密码",required = true)
     private  String  password;
 }

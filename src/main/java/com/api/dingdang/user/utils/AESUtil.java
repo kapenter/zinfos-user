@@ -1,5 +1,6 @@
 package com.api.dingdang.user.utils;
 
+import com.api.dingdang.user.constants.Constants;
 import org.apache.commons.lang.StringUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -102,12 +103,11 @@ public class AESUtil {
     /**
      * AES加密为base 64 code
      * @param content 待加密的内容
-     * @param encryptKey 加密密钥
      * @return 加密后的base 64 code
      * @throws Exception
      */
-    public static String aesEncrypt(String content, String encryptKey) throws Exception {
-        return base64Encode(aesEncryptToBytes(content, encryptKey));
+    public static String aesEncrypt(String content) throws Exception {
+        return base64Encode(aesEncryptToBytes(content, Constants.ENCRYPTED_KEY));
     }
 
     /**
@@ -137,26 +137,25 @@ public class AESUtil {
     /**
      * 将base 64 code AES解密
      * @param encryptStr 待解密的base 64 code
-     * @param decryptKey 解密密钥
      * @return 解密后的string
      * @throws Exception
      */
-    public static String aesDecrypt(String encryptStr, String decryptKey) throws Exception {
-        return StringUtils.isBlank(encryptStr) ? null : aesDecryptByBytes(base64Decode(encryptStr), decryptKey);
+    public static String aesDecrypt(String encryptStr) throws Exception {
+        return StringUtils.isBlank(encryptStr) ? null : aesDecryptByBytes(base64Decode(encryptStr), Constants.ENCRYPTED_KEY);
     }
 
 
     public static void main(String[] args) throws Exception {
-        String content = "noauthoritynoauthority";
+        String content = "17688917168";
         System.out.println("加密前：" + content);
 
-        String key = "nc_report@#$";
-        System.out.println("加密密钥和解密密钥：" + key);
+//        String key = "nc_report@#$";
+//        System.out.println("加密密钥和解密密钥：" + key);
 
-        String encrypt = aesEncrypt(content, key);
+        String encrypt = aesEncrypt(content);
         System.out.println("加密后：" + encrypt);
 
-        String decrypt = aesDecrypt(encrypt, key);
+        String decrypt = aesDecrypt(encrypt);
         System.out.println("解密后：" + decrypt);
     }
 

@@ -1,5 +1,6 @@
 package com.api.dingdang.user.controller;
 
+import com.api.dingdang.user.constants.Constants;
 import com.api.dingdang.user.dto.req.user.UserLoginReqDTO;
 import com.api.dingdang.user.dto.req.user.UserLoginVerifyReqDTO;
 import com.api.dingdang.user.dto.req.user.UserRegReqDTO;
@@ -47,8 +48,11 @@ public class UserController {
     @ApiOperation(value = "用户密码登录")
     public JsonResponse doLogin(@RequestBody UserLoginReqDTO userLoginReqDTO){
         User user= userService.selectOne(userMapStruct.loginReq2do(userLoginReqDTO));
+        //登录成功
         if(user!=null){
-            return JsonResponse.success(new UserLoginResp(ZuStringUtil.getAccessToken()));
+            String accessToken=ZuStringUtil.getAccessToken();
+            redis.set(Constants.LOGIN_ACCESS_TOKEN+userLoginReqDTO.getMobile(),accessToken,Constants.MONTH);
+            return JsonResponse.success(new UserLoginResp(accessToken));
         }
         return JsonResponse.failure(UserCodeEnum.LOGIN_EXCEPTION);
     }
