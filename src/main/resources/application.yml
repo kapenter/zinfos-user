@@ -5,19 +5,19 @@ spring:
     name: zinfos-user
   main:
     allow-bean-definition-overriding: true
-  redis:
-    database: 1
-    host: 39.108.213.94
-    port: 6379
-    timeout: 3000ms
-    password: zhouwei1990
-    jedis:
-      pool:
-        max-idle: 8
-        min-idle: 0
-        max-wait: -1ms
-        max-active: 8
-    testOnBorrow: true
+#  redis:
+#    database: 1
+#    host: 39.108.213.94
+#    port: 6379
+#    timeout: 3000ms
+#    password: zhouwei1990
+#    jedis:
+#      pool:
+#        max-idle: 8
+#        min-idle: 0
+#        max-wait: -1ms
+#        max-active: 8
+#    testOnBorrow: true
 eureka:
   instance:
     hostname: localhost

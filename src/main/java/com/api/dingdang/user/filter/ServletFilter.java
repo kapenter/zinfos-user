@@ -6,8 +6,8 @@ import com.api.dingdang.user.exception.enums.BizCodeEnum;
 import com.api.dingdang.user.utils.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public class ServletFilter  implements Filter{
 
     private List<String>  excludeUrlList= Arrays.asList("/user/doLogin,/user/reg".split(","));
 
-    @Autowired
+    @Resource
     private RedisUtil redisUtil;
 
     @Override
