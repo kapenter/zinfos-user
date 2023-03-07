@@ -37,52 +37,53 @@ public class ServletFilter  implements Filter{
         // 1.验证 nonce 是否有传值 是否唯一
         // 2.timestamp 是否有传2分钟之类
         // 3.验证token是否是登录时候生成的token
-        HttpServletRequest request=(HttpServletRequest)servletRequest;
-        HttpServletResponse response=(HttpServletResponse)servletResponse;
-
-        String pathUrl=request.getServletPath();
-        // 如果是excludeUrl 直接通过
-        if(excludeUrlList.contains(pathUrl)||
-                pathUrl.endsWith(".html")||
-                pathUrl.endsWith(".js")||
-                pathUrl.startsWith("/webjars/")||
-                pathUrl.startsWith("/swagger-resources")||
-                pathUrl.contains("/v2/api-docs")||
-                pathUrl.contains("/favicon.ico")||
-                pathUrl.contains("/doc.html")
-                ){
-            filterChain.doFilter(servletRequest,servletResponse);
-            return;
-        }
-
-        String nonce=request.getParameter("nonce");
-        if(ZuStringUtil.isBlank(nonce)|| redisUtil.hasKey(nonce)){
-            servletFilterException(response,BizCodeEnum.NONCE_INVALID);
-            return;
-        }
-
-        long timestamp= Long.parseLong(request.getParameter("timestamp"));
-        int interval=60*2;
-        if(!ZuDateUtil.checkTime(timestamp,interval)){
-            servletFilterException(response,BizCodeEnum.TIME_STAMP_INVALID);
-            return;
-        }
-
-        String  encryptedMobile;
-        try {
-              encryptedMobile= AESUtil.aesEncrypt(request.getHeader("mobile"));
-        } catch (Exception e) {
-            log.error("encryptedMobile error",e);
-            servletFilterException(response,BizCodeEnum.ENCRYPTED_DATA_EXCEPTION);
-            return;
-        }
-        //token不存在 或者 token不满足登录的token
-        String accessToken=request.getHeader("accessToken");
-        if(ZuStringUtil.isBlank(accessToken)||redisUtil.get(Constants.LOGIN_ACCESS_TOKEN+encryptedMobile)==null){
-            servletFilterException(response,BizCodeEnum.TOKEN_INVALID);
-            return ;
-        }
-        redisUtil.set(nonce,nonce,Constants.DAY);
+//        HttpServletRequest request=(HttpServletRequest)servletRequest;
+//        HttpServletResponse response=(HttpServletResponse)servletResponse;
+//
+//        String pathUrl=request.getServletPath();
+//        // 如果是excludeUrl 直接通过
+//        if(excludeUrlList.contains(pathUrl)||
+//                pathUrl.endsWith(".html")||
+//                pathUrl.endsWith(".js")||
+//                pathUrl.startsWith("/webjars/")||
+//                pathUrl.startsWith("/swagger-resources")||
+//                pathUrl.contains("/v2/api-docs")||
+//                pathUrl.contains("/favicon.ico")||
+//                pathUrl.contains("/doc.html")
+//                ){
+//            filterChain.doFilter(servletRequest,servletResponse);
+//            return;
+//        }
+//
+//        String nonce=request.getParameter("nonce");
+//        System.out.println("i am  coming");
+////        if(ZuStringUtil.isBlank(nonce)|| redisUtil.hasKey(nonce)){
+////            servletFilterException(response,BizCodeEnum.NONCE_INVALID);
+////            return;
+////        }
+//
+//        long timestamp= Long.parseLong(request.getParameter("timestamp"));
+//        int interval=60*2;
+//        if(!ZuDateUtil.checkTime(timestamp,interval)){
+//            servletFilterException(response,BizCodeEnum.TIME_STAMP_INVALID);
+//            return;
+//        }
+//
+//        String  encryptedMobile;
+//        try {
+//              encryptedMobile= AESUtil.aesEncrypt(request.getHeader("mobile"));
+//        } catch (Exception e) {
+//            log.error("encryptedMobile error",e);
+//            servletFilterException(response,BizCodeEnum.ENCRYPTED_DATA_EXCEPTION);
+//            return;
+//        }
+//        //token不存在 或者 token不满足登录的token
+//        String accessToken=request.getHeader("accessToken");
+//        if(ZuStringUtil.isBlank(accessToken)||redisUtil.get(Constants.LOGIN_ACCESS_TOKEN+encryptedMobile)==null){
+//            servletFilterException(response,BizCodeEnum.TOKEN_INVALID);
+//            return ;
+//        }
+//        redisUtil.set(nonce,nonce,Constants.DAY);
         filterChain.doFilter(servletRequest,servletResponse);
     }
 
