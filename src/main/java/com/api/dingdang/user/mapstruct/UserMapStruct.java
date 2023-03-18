@@ -17,10 +17,6 @@ public interface UserMapStruct {
 
     User req2do(UserReq userReq);
 
-    @Mappings({
-            @Mapping(source = "mobile",target = "svuserteleno"),
-            @Mapping(source = "password",target = "svuserpasswd")
-    })
     User loginReq2do(UserLoginReqDTO userLoginReqDTO);
 
 }
